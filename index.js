@@ -29,32 +29,109 @@ var log = bunyan.createLogger({
     name: 'Microsoft OIDC Example Web Application'
 });
 
-passport.serializeUser(function(user, done) {
-  done(null, user.oid);
-});
+// passport.serializeUser(function(user, done) {
+//   done(null, user.oid);
+// });
 
-passport.deserializeUser(function(oid, done) {
-  findByOid(oid, function (err, user) {
-    done(err, user);
-  });
-});
+// passport.deserializeUser(function(oid, done) {
+//   findByOid(oid, function (err, user) {
+//     done(err, user);
+//   });
+// });
 
-// array to hold logged in users
+// // array to hold logged in users
+// var users = [];
+
+// var findByOid = function(oid, fn) {
+//   for (var i = 0, len = users.length; i < len; i++) {
+//     var user = users[i];
+//    log.info('we are using user: ', user);
+//     if (user.oid === oid) {
+//       return fn(null, user);
+//     }
+//   }
+//   return fn(null, null);
+// };
+
+// passport.use(new OIDCStrategy({
+//     identityMetadata: config.creds.identityMetadata,
+//     clientID: config.creds.clientID,
+//     responseType: config.creds.responseType,
+//     responseMode: config.creds.responseMode,
+//     redirectUrl: config.creds.redirectUrl,
+//     allowHttpForRedirectUrl: config.creds.allowHttpForRedirectUrl,
+//     clientSecret: config.creds.clientSecret,
+//     validateIssuer: config.creds.validateIssuer,
+//     isB2C: config.creds.isB2C,
+//     issuer: config.creds.issuer,
+//     passReqToCallback: config.creds.passReqToCallback,
+//     scope: config.creds.scope,
+//     loggingLevel: config.creds.loggingLevel,
+//     nonceLifetime: config.creds.nonceLifetime,
+//     nonceMaxAmount: config.creds.nonceMaxAmount,
+//     useCookieInsteadOfSession: config.creds.useCookieInsteadOfSession,
+//     cookieEncryptionKeys: config.creds.cookieEncryptionKeys,
+//     clockSkew: config.creds.clockSkew,
+//     loggingNoPII: false
+//   },
+//   function(iss, sub, profile, accessToken, refreshToken, done) {
+//     if (!profile.oid) {
+//       return done(new Error("No oid found"), null);
+//     }
+//     // asynchronous verification, for effect...
+//     process.nextTick(function () {
+//       findByOid(profile.oid, function(err, user) {
+//         if (err) {
+//           return done(err);
+//         }
+//         if (!user) {
+//           // "Auto-registration"
+//           users.push(profile);
+//           return done(null, profile);
+//         }
+//         return done(null, user);
+//       });
+//     });
+//   }
+// ));
+
+
 var users = [];
-
-var findByOid = function(oid, fn) {
-  for (var i = 0, len = users.length; i < len; i++) {
-    var user = users[i];
-   log.info('we are using user: ', user);
-    if (user.oid === oid) {
-      return fn(null, user);
+ 
+//   To support persistent login sessions, Passport needs to be able to
+//   serialize users into and deserialize users out of the session.  Typically,
+//   this will be as simple as storing the user ID when serializing, and finding
+//   the user by ID when deserializing.
+passport.serializeUser(function (user, done) {
+    done(null, user.oid);
+});
+ 
+passport.deserializeUser(function (id, done) {
+    findByOID(id, function (err, user) {
+        done(err, user);
+    });
+});
+ 
+ 
+var findByOID = function (oid, fn) {
+    for (var i = 0, len = users.length; i < len; i++) {
+        var user = users[i];
+ 
+        if (user.oid === oid) {
+            return fn(null, user);
+        }
     }
-  }
-  return fn(null, null);
+    console.log("Did not find user by OID: " + oid);
+    return fn(null, null);
 };
-
+ 
+// Use the OIDCStrategy within Passport. (Section 2)
+//
+//   Strategies in passport require a `validate` function, which accept
+//   credentials (in this case, an OpenID identifier), and invoke a callback
+//   with a user object.
 passport.use(new OIDCStrategy({
-    identityMetadata: config.creds.identityMetadata,
+       identityMetadata: config.creds.identityMetadata,
     clientID: config.creds.clientID,
     responseType: config.creds.responseType,
     responseMode: config.creds.responseMode,
@@ -72,33 +149,35 @@ passport.use(new OIDCStrategy({
     useCookieInsteadOfSession: config.creds.useCookieInsteadOfSession,
     cookieEncryptionKeys: config.creds.cookieEncryptionKeys,
     clockSkew: config.creds.clockSkew,
-  },
-  function(iss, sub, profile, accessToken, refreshToken, done) {
-    if (!profile.oid) {
-      return done(new Error("No oid found"), null);
+    loggingNoPII: false
+},
+    function (iss, sub, profile, accessToken, refreshToken, done) {
+        if (!profile.oid) {
+            console.log(util.inspect(profile));
+            return done(new Error("No OID found"), null);
+        }
+        // asynchronous verification, for effect…
+        process.nextTick(function () {
+            findByOID(profile.oid, function (err, user) {
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    // "Auto-registration"
+                    users.push(profile);
+                    return done(null, profile);
+                }
+                return done(null, user);
+            });
+        });
     }
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-      findByOid(profile.oid, function(err, user) {
-        if (err) {
-          return done(err);
-        }
-        if (!user) {
-          // "Auto-registration"
-          users.push(profile);
-          return done(null, profile);
-        }
-        return done(null, user);
-      });
-    });
-  }
 ));
 
 var app = express();
 app.use(express.logger());
 app.use(methodOverride());
 app.use(cookieParser());
-app.use(express.static(__dirname + '/public'))
+
 
 // set up session middleware
 if (config.useMongoDBSessionStore) {
@@ -129,28 +208,32 @@ app.use("/publish/index.html", function(req, res){
 
 
 
-/*
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  //res.redirect('/index.html');
-};
 
-app.use('/', ensureAuthenticated, function(req, res) {
-
-    console.log(req)
-
-  if(req.user == undefined){
-    res.render('/bu.html');
+function checkAuthenticatedOnLogin(req,res,next){
+  if (!req.isAuthenticated()) {
+    res.send('You are not authorized to view this page');
   } else {
-    res.render('/dashboard.html', { user: req.user });
+    next();
   }
+}
 
-});
+app.use(express.static(__dirname + '/public'));
+// app.use('/', ensureAuthenticated, function(req, res) {
 
-/*
+//     console.log(req)
+
+//   if(req.user == undefined){
+//     res.render('/bu.html');
+//   } else {
+//     res.render('/dashboard.html', { user: req.user });
+//   }
+
+// });
+
+
 
 // '/account' is only available to logged in user
-app.get('/account', ensureAuthenticated, function(req, res) {
+app.get('/account', checkAuthenticatedOnLogin, function(req, res) {
   res.render('account', { user: req.user });
 });
 
@@ -231,7 +314,7 @@ app.use('/login',
       }
     )(req, res, next);
   },
-  function(req, res) {
+  function(res) {
     log.info('Login was called in the Sample');
     console.log("maasasasas")
     res.redirect('/dashboard.html');
