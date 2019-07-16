@@ -1,0 +1,65 @@
+<%- include('header'); -%>
+
+<style>
+    .logselect {
+        float: right;
+    }
+
+    select#showlogs {
+        width: 200px;
+        float: right;
+    }
+</style>
+
+<body class="fix-header">
+
+    <div id="wrapper">
+        <%- include('menu'); -%>
+
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row bg-title">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h4 class="page-title">Reports</h4>
+                    </div>
+                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                        <div class="logselect">
+
+                            <div class="form-group">
+                                <label style="padding-right: 20px;
+                                    padding-top: 10px;">Select Report</label>
+                                <select name="showlogs" id="showlogs" class="form-control" onchange="changelog()">
+                                    <option value="A">CP Application Report</option>
+                                    <option value="B">Azure Component Report</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="white-box">
+                            <div class="table-responsive" id="demo">
+
+                                <iframe width="100%" height="540px"
+                                    src="https://app.powerbi.com/reportEmbed?reportId=afe003de-dfd0-4931-9680-904fafaac6da&autoAuth=true&ctid=cd99fef8-1cd3-4a2a-9bdf-15531181d65e"
+                                    frameborder="0" allowFullScreen="true"></iframe>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+            <footer class="footer text-center"> 2019 &copy; DPDHL iot.dhl.com </footer>
+        </div>
+    </div>
+</body>
+
+<%- include('footer'); -%>
+<script src="js/datajs/reports.js"></script>
+
+</html>

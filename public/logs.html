@@ -1,0 +1,126 @@
+<%- include('header'); -%>
+
+<style>
+    .logselect {
+        float: right;
+    }
+
+    select#showlogs {
+        width: 200px;
+        float: right;
+    }
+</style>
+<script>
+    function getAppInsightsData() {
+        const userAction = async () => {
+            const url = 'https://api.applicationinsights.io/v1/apps/6044a517-fd38-48ff-b9fd-bf8aaa93ca97/metrics/requests/count?timespan=P30D';
+            const myHeaders = {
+                headers: new Headers({
+                    'x-api-key': 'q4jdp6swt4015amrj0681s0xs5r4opotc4f5sfv3'
+                })
+            }
+            const response = await fetch(url, myHeaders);
+            const myJson = await response.json();
+
+            document.getElementById('p1').innerHTML = 'Date Range: ' + myJson.value.start + ' to ' + myJson.value.end + '. Requests: ' + myJson.value["requests/count"].sum;
+        }
+        userAction();
+    }
+</script>
+
+<body class="fix-header">
+    <div id="wrapper">
+
+        <%- include('menu'); -%>
+
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row bg-title">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h4 class="page-title">Logs</h4>
+                    </div>
+                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                        <div class="logselect">
+
+                            <div class="form-group">
+                                <label style="padding-right: 20px;
+                                padding-top: 10px;">Select Logs</label>
+                                <select name="showlogs" id="showlogs" class="form-control" onchange="changelog()">
+                                    <option value="1">CP Application Logs</option>
+                                    <option value="2">Azure Component Logs</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="white-box">
+                            <div class="table-responsive">
+                                <!---<button type="submit" onclick="javascript:getAppInsightsData()">Get data using fetch</button>
+                                <div id='div'>
+                                  <p id='p1'></p>
+                                </div>
+                            -->
+
+                                <div class="table-responsive" id="demo">
+                                    <div class="lds-ring">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="entity" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Log Data</h4>
+
+
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="center" id="jsonC">
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer text-center"> 2019 &copy; DPDHL iot.dhl.com </footer>
+        </div>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+
+    var sdkInstance = "appInsightsSDK"; window[sdkInstance] = "appInsights"; var aiName = window[sdkInstance], aisdk = window[aiName] || function (e) {
+        function n(e) { t[e] = function () { var n = arguments; t.queue.push(function () { t[e].apply(t, n) }) } } var t = { config: e }; t.initialize = !0; var i = document, a = window; setTimeout(function () { var n = i.createElement("script"); n.src = e.url || "https://az416426.vo.msecnd.net/next/ai.2.min.js", i.getElementsByTagName("script")[0].parentNode.appendChild(n) }); try { t.cookie = i.cookie } catch (e) { } t.queue = [], t.version = 2; for (var r = ["Event", "PageView", "Exception", "Trace", "DependencyData", "Metric", "PageViewPerformance"]; r.length;)n("track" + r.pop()); n("startTrackPage"), n("stopTrackPage"); var s = "Track" + r[0]; if (n("start" + s), n("stop" + s), n("setAuthenticatedUserContext"), n("clearAuthenticatedUserContext"), n("flush"), !(!0 === e.disableExceptionTracking || e.extensionConfig && e.extensionConfig.ApplicationInsightsAnalytics && !0 === e.extensionConfig.ApplicationInsightsAnalytics.disableExceptionTracking)) { n("_" + (r = "onerror")); var o = a[r]; a[r] = function (e, n, i, a, s) { var c = o && o(e, n, i, a, s); return !0 !== c && t["_" + r]({ message: e, url: n, lineNumber: i, columnNumber: a, error: s }), c }, e.autoExceptionInstrumented = !0 } return t
+    }({
+        instrumentationKey: "135a8b9b-a1cd-4e5c-baca-b71be3942950"
+    });
+
+    window[aiName] = aisdk, aisdk.queue && 0 === aisdk.queue.length && aisdk.trackPageView({});
+
+
+</script>
+
+<%- include('footer'); -%>
+<script src="/js/datajs/log.js"></script>
+
+</html>

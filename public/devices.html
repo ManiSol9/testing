@@ -1,0 +1,320 @@
+<%- include('header'); -%>
+
+<body class="fix-header">
+    <!-- ============================================================== -->
+    <!-- Wrapper -->
+    <!-- ============================================================== -->
+    <div id="wrapper">
+
+        <%- include('menu'); -%>
+
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row bg-title">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h4 class="page-title">On Boarded Devices</h4>
+                    </div>
+                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                        <a id="addDevice" onclick="onBoardDevice('A')"
+                            class="btn btn-danger pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light">
+                            Add Device </a>
+
+                        <a id="goBack" style="display: none" onclick="onBoardDevice('B')"
+                            class="btn btn-danger pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light">
+                            Go Back </a>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="white-box">
+                            <div class="table-responsive" id="demo" style="display: inline-block">
+                                <div class="lds-ring">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+
+                            </div>
+
+                            <div class="table-responsive" id="demo2" style="display: none">
+                                <div class="col-md-12">
+                                    <div class="col-md-12 body-part-1">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-4">Select Group</label>
+                                                <div class="col-sm-8">
+                                                    <div id="group">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a data-toggle="modal" data-target="#groupadd"
+                                                class="btn btn-danger pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light">
+                                                Add New Group </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 body-part-2" id="body-part-2" style="display: none">
+                                        <div class="col-md-12">
+                                            <div class="form-horizontal form-material">
+                                                <div class="form-group col-md-3">
+                                                    <label for="example-email" class="col-md-12">Device Name</label>
+                                                    <div class="col-md-12">
+                                                        <input type="text" id="deviceName" class="form-control"
+                                                            placeholder="Please enter device name..."
+                                                            aria-describedby="basic-addon1">
+                                                        <div class="icon-container" id="iconcontainer"
+                                                            style="display: none">
+                                                            <i class="loader"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-md-12">Device ID</label>
+                                                    <div class="col-md-12">
+                                                        <input type="text" id="deviceId" class="form-control"
+                                                            placeholder="Please enter devce ID"
+                                                            aria-describedby="basic-addon1">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-md-12">Device ID</label>
+                                                    <div class="col-md-12">
+                                                        <input type="text" id="deviceUUID" class="form-control"
+                                                            placeholder="Please enter device uuid..."
+                                                            aria-describedby="basic-addon1">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label for="example-email" class="col-md-12">Device
+                                                        Serialnumber</label>
+                                                    <div class="col-md-12">
+                                                        <input type="text" id="serialnumber" class="form-control"
+                                                            placeholder="Please enter device serialnumber..."
+                                                            aria-describedby="basic-addon1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-horizontal form-material">
+
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-md-12">Device MAC Address</label>
+                                                    <div class="col-md-12">
+                                                        <input type="text" id="macaddress" class="form-control"
+                                                            placeholder="Please enter device macaddress..."
+                                                            aria-describedby="basic-addon1">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-md-12">Device Health</label>
+                                                    <div class="col-md-12">
+                                                        <input type="text" id="deviceHealth" class="form-control"
+                                                            placeholder="Please enter device deviceHealth..."
+                                                            aria-describedby="basic-addon1">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label for="example-email" class="col-md-12">Device Protocol</label>
+                                                    <div class="col-md-12">
+                                                        <input type="text" id="protocol" class="form-control"
+                                                            placeholder="Please enter deivce protocol"
+                                                            aria-describedby="basic-addon1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-md-12">Device Power Type</label>
+                                                    <div class="col-md-12">
+
+                                                        <input type="text" id="powertype" class="form-control"
+                                                            placeholder="Please enter deivce power type"
+                                                            aria-describedby="basic-addon1">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-horizontal form-material">
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-md-12">Is it IOT Ready?</label>
+                                                    <div class="col-md-12">
+                                                        <select name="iotready" id="iotready" class="form-control">
+                                                            <option value="0">Yes</option>
+                                                            <option value="1">No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-3">
+
+                                                </div>
+
+                                                <div class="form-group col-md-6">
+                                                    <button style="width: 100px;" class="btn btn-success"
+                                                        onclick="addtogroup()" id="addtogroup">Add</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <div class="users-list">
+                                                    <div>
+                                                        <h3>Devices List</h3>
+                                                    </div>
+                                                    <div class="table-responsive list-users" id="list-users">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button onclick="addapp()"
+                                                class="btn btn-success pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light">
+                                                + Add Application </button>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12 body-part-3" id="addapppart" style="display: none">
+                                        <div class="col-md-12">
+                                            <form class="form-horizontal form-material">
+                                                <div class="form-group">
+                                                    <label class="col-sm-12">Select BU</label>
+                                                    <div class="col-sm-12" id="bu">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" id="appdiv" style="display: none">
+                                                    <label class="col-sm-12">Select App</label>
+                                                    <div class="col-sm-12" id="apps">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-12" style="text-align: right;">
+                                                        <button id="finalSave" class="btn btn-success">Submit &
+                                                            Save</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="entity" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add Device</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post">
+                                    <div class="input-group">
+                                        <input type="text" id="deviceName" class="form-control"
+                                            placeholder="Please enter device name..." aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" id="deviceId" class="form-control"
+                                            placeholder="Please enter devce ID" aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" id="deviceUUID" class="form-control"
+                                            placeholder="Please enter device uuid..." aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" id="serialnumber" class="form-control"
+                                            placeholder="Please enter device serialnumber..."
+                                            aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" id="macaddress" class="form-control"
+                                            placeholder="Please enter device macaddress..."
+                                            aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" id="deviceHealth" class="form-control"
+                                            placeholder="Please enter device deviceHealth..."
+                                            aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" id="protocol" class="form-control"
+                                            placeholder="Please enter deivce protocol" aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" id="powertype" class="form-control"
+                                            placeholder="Please enter deivce power type"
+                                            aria-describedby="basic-addon1">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <select name="iotready" id="iotready" class="form-control">
+                                            <option value="0">Yes</option>
+                                            <option value="1">No</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="input-group" id="selectapp">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-default" id="save-list">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="groupadd" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Add Group</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label class="col-md-12">Group Name</label>
+                                    <div class="col-md-12">
+                                        <input type="text" placeholder="" class="form-control form-control-line"
+                                            id="groupname"> </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-default" id="save-group">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+            <footer class="footer text-center"> 2019 &copy; DPDHL iot.dhl.com </footer>
+        </div>
+    </div>
+
+</body>
+
+<%- include('footer'); -%>
+<script src="js/datajs/device.js"></script>
+
+</html>
