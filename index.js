@@ -234,7 +234,7 @@ app.use('/login',
   function(req, res) {
     log.info('Login was called in the Sample');
     console.log("maasasasas")
-    res.redirect('/bu.html');
+    res.redirect('/dashboard.html');
 });
 
 // 'GET returnURL'
@@ -252,7 +252,7 @@ app.use('/auth/openid/return',
   },
   function(req, res) {
     log.info('We received a return from AzureAD.');
-    res.redirect('/bu.html');
+    res.redirect('/dashboard.html');
   });
 
 // 'POST returnURL'
@@ -273,7 +273,7 @@ app.post('/auth/openid/return',
   },
   function(req, res) {
     log.info('We received a return from AzureAD.');
-    res.redirect('/bu.html');
+    res.redirect('/dashboard.html');
   });
 
 // 'logout' route, logout from passport, and destroy the session with AAD.
